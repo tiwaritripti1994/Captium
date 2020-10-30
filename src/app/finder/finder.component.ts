@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GetMfrNamesService} from './../get-mfr-names.service';
+import {DataService} from './../data.service';
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -12,7 +13,7 @@ export class FinderComponent implements OnInit {
   public searchVal:any;
   public data:any = [];
   
-  constructor(private getmfrname:GetMfrNamesService) { }
+  constructor(private getmfrname:GetMfrNamesService,private dataProvider: DataService) { }
 
   ngOnInit() {
   }
@@ -23,10 +24,15 @@ export class FinderComponent implements OnInit {
       this.getmfrname.getMfname(this.searchVal).subscribe(
       data => {
        var res = data;
-        this.data = res.data;
+        this.data = res.Results;
+        this.dataProvider.setallnameValue(this.data);
       })
     })
-  
+  if(this.data && this.data.length > 0){
+  var fname = this.dataProvider.getallnameValue();
+  console.log(fname);
+  }
   
 }
+
 }
